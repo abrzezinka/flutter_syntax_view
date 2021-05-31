@@ -11,7 +11,8 @@ class SyntaxView extends StatefulWidget {
       this.withZoom = true,
       this.withLinesCount = true,
       this.fontSize = 12.0,
-      this.expanded = false});
+      this.expanded = false,
+      this.scrollable = true});
 
   /// Code text
   final String code;
@@ -34,6 +35,9 @@ class SyntaxView extends StatefulWidget {
   /// Expansion which allows the SyntaxView to be used inside a Column or a ListView... (default: false)
   final bool expanded;
 
+  // Enable/Disable scrolling
+  final bool scrollable;
+
   @override
   State<StatefulWidget> createState() => SyntaxViewState();
 }
@@ -55,7 +59,13 @@ class SyntaxViewState extends State<SyntaxView> {
           constraints: widget.expanded ? BoxConstraints.expand() : null,
           child: Scrollbar(
               child: SingleChildScrollView(
+                physics: widget.scrollable
+                      ? const AlwaysScrollableScrollPhysics()
+                      : const NeverScrollableScrollPhysics(),
                   child: SingleChildScrollView(
+                    physics: widget.scrollable
+                      ? const AlwaysScrollableScrollPhysics()
+                      : const NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       child: widget.withLinesCount
                           ? buildCodeWithLinesCount() // Syntax view with line number to the left
